@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MenuLink Addis</title>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;font-family:Arial,sans-serif;
+  background:#f3f8f4;color:#183b25
+}
+header{
+  background:#168344;color:white;
+  text-align:center;padding:25px 15px
+}
+header h1{margin:0}
+.container{max-width:600px;margin:auto;padding:16px}
+.card{
+  background:white;padding:18px;border-radius:16px;
+  margin-bottom:16px;box-shadow:0 3px 12px #0001
+}
+input,select,button{
+  width:100%;padding:12px;margin:7px 0;
+  border-radius:9px;border:1px solid #ddd;font-size:16px
+}
+button{
+  background:#168344;color:white;border:0;
+  font-weight:bold;cursor:pointer
+}
+.food{
+  border-bottom:1px solid #eee;padding:12px 0
+}
+.food img{
+  width:100%;height:180px;object-fit:cover;border-radius:12px
+}
+.price{color:#168344;font-weight:bold}
+#qr{text-align:center}
+#qr img{width:200px;max-width:100%}
+footer{text-align:center;padding:20px;color:#777}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>🍽️ MenuLink Addis</h1>
+<p>Scan • View • Enjoy</p>
+</header>
+
+<div class="container">
+
+<div class="card">
+<h2 id="cafeTitle">My Cafe</h2>
+<input id="cafeName" placeholder="Cafe / Restaurant Name">
+<button onclick="saveCafe()">Save Cafe Name</button>
+</div>
+
+<div class="card">
+<h3>➕ Add Menu Item</h3>
+<input id="foodName" placeholder="Food or Drink Name">
+<input id="foodPrice" type="number" placeholder="Price (ETB)">
+<input id="foodPhoto" placeholder="Food photo URL (optional)">
+<select id="foodCategory">
+<option>Food</option>
+<option>Breakfast</option>
+<option>Lunch</option>
+<option>Dinner</option>
+<option>Coffee</option>
+<option>Drinks</option>
+<option>Dessert</option>
+</select>
+<button onclick="addFood()">Add to Menu</button>
+</div>
+
+<div class="card">
+<input id="search" placeholder="🔍 Search menu..." oninput="showMenu()">
+<h3>Our Menu</h3>
+<div id="menu"></div>
+</div>
+
+<div class="card" id="qr">
+<h3>📱 QR Menu</h3>
+<p>Scan to open this menu</p>
+<button onclick="makeQR()">Generate QR Code</button>
+<div id="qrImage"></div>
+</div>
+
+</div>
+
+<footer>Developed by Minilik Solomon<br>MenuLink Addis © 2026</footer>
+
+<script>
+let foods=JSON.parse(localStorage.getItem("foods")||"[]");
+let cafe=localStorage.getItem("cafeName")||"My Cafe";
+
+document.getElementById("cafeTitle").innerText=cafe;
+document.getElementById("cafeName").value=cafe;
+
+function saveCafe(){
+ cafe=document.getElementById("cafeName").value||"My Cafe";
+ localStorage.setItem("cafeName",cafe);
+ document.getElementById("cafeTitle").innerText=cafe;
+}
+
+function addFood(){
+ let name=document.getElementById("foodName").value;
+ let price=document.getElementById("foodPrice").value;
+ let photo=document.getElementById("foodPhoto").value;
+ let category=document.getElementById("foodCategory").value;
+
+ if(!name||!price){
+  alert("Enter food name and price");
+  return;
+ }
+
+ foods.push({name,price,photo,category});
+ localStorage.setItem("foods",JSON.stringify(foods));
+
+ document.getElementById("foodName").value="";
+ document.getElementById("foodPrice").value="";
+ document.getElementById("foodPhoto").value="";
+ showMenu();
+}
+
+function deleteFood(i){
+ foods.splice(i,1);
+ localStorage.setItem("foods",JSON.stringify(foods));
+ showMenu();
+}
+
+function showMenu(){
+ let q=document.getElementById("search").value.toLowerCase();
+ let menu=document.getElementById("menu");
+ menu.innerHTML="";
+
+ foods.forEach((f,i)=>{
+  if((f.name+" "+f.category).toLowerCase().includes(q)){
+   menu.innerHTML+=`
+   <div class="food">
+   ${f.photo?`<img src="${f.photo}" alt="${f.name}">`:""}
+   <h4>${f.name}</h4>
+   <p>${f.category}</p>
+   <div class="price">${f.price} ETB</div>
+   <button onclick="deleteFood(${i})">Delete</button>
+   </div>`;
+  }
+ });
+}
+
+function makeQR(){
+ if(!location.href.startsWith("http")){
+  alert("Publish your website first to create a working public QR!");
+  return;
+ }
+ let link=encodeURIComponent(location.href);
+ document.getElementById("qrImage").innerHTML=
+ `<img alt="Menu QR Code" src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${link}">
+ <p>Scan with your phone 📱</p>`;
+}
+
+showMenu();
+</script>
+</body>
+</html>
