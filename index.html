@@ -1,165 +1,435 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="am">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MenuLink Addis</title>
+<title>MenuLink Addis V4</title>
+
 <style>
-*{box-sizing:border-box}
-body{
-  margin:0;font-family:Arial,sans-serif;
-  background:#f3f8f4;color:#183b25
+* {
+  box-sizing: border-box;
 }
-header{
-  background:#168344;color:white;
-  text-align:center;padding:25px 15px
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f2f7f3;
+  color: #183c29;
 }
-header h1{margin:0}
-.container{max-width:600px;margin:auto;padding:16px}
-.card{
-  background:white;padding:18px;border-radius:16px;
-  margin-bottom:16px;box-shadow:0 3px 12px #0001
+
+header {
+  background: #168348;
+  color: white;
+  text-align: center;
+  padding: 25px 15px;
 }
-input,select,button{
-  width:100%;padding:12px;margin:7px 0;
-  border-radius:9px;border:1px solid #ddd;font-size:16px
+
+header h1 {
+  margin: 0;
 }
-button{
-  background:#168344;color:white;border:0;
-  font-weight:bold;cursor:pointer
+
+header p {
+  margin-bottom: 0;
 }
-.food{
-  border-bottom:1px solid #eee;padding:12px 0
+
+.container {
+  max-width: 850px;
+  margin: auto;
+  padding: 15px;
 }
-.food img{
-  width:100%;height:180px;object-fit:cover;border-radius:12px
+
+.card {
+  background: white;
+  padding: 18px;
+  border-radius: 15px;
+  margin-bottom: 18px;
+  box-shadow: 0 3px 12px #0000000a;
 }
-.price{color:#168344;font-weight:bold}
-#qr{text-align:center}
-#qr img{width:200px;max-width:100%}
-footer{text-align:center;padding:20px;color:#777}
+
+h2 {
+  color: #168348;
+}
+
+input, select, button {
+  width: 100%;
+  padding: 12px;
+  margin: 7px 0;
+  border-radius: 9px;
+  border: 1px solid #ddd;
+  font-size: 16px;
+}
+
+button {
+  background: #168348;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #106a39;
+}
+
+.delete {
+  background: #d64545;
+}
+
+.menu-item {
+  border: 1px solid #e5e5e5;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 12px;
+}
+
+.menu-item img {
+  width: 100%;
+  max-height: 220px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.cafe-button {
+  background: #e8f5ed;
+  color: #146c3b;
+  border: 1px solid #b9dfc7;
+  text-align: left;
+}
+
+#qr img {
+  max-width: 220px;
+  display: block;
+  margin: 15px auto;
+}
+
+footer {
+  text-align: center;
+  padding: 25px;
+  color: #777;
+}
 </style>
 </head>
 
 <body>
 
 <header>
-<h1>🍽️ MenuLink Addis</h1>
-<p>Scan • View • Enjoy</p>
+  <h1>🍽️ MenuLink Addis</h1>
+  <p>የካፌዎች ዲጂታል ሜኑ</p>
 </header>
 
 <div class="container">
 
+<!-- Cafe Registration -->
 <div class="card">
-<h2 id="cafeTitle">My Cafe</h2>
-<input id="cafeName" placeholder="Cafe / Restaurant Name">
-<button onclick="saveCafe()">Save Cafe Name</button>
+  <h2>🏪 ካፌ መመዝገቢያ</h2>
+
+  <input id="cafeName" placeholder="የካፌ ስም">
+
+  <input id="cafePhone"
+         placeholder="የስልክ ቁጥር"
+         type="tel">
+
+  <input id="cafeAddress"
+         placeholder="የካፌ አድራሻ">
+
+  <button onclick="addCafe()">ካፌ መዝግብ</button>
 </div>
 
+<!-- Cafe List -->
 <div class="card">
-<h3>➕ Add Menu Item</h3>
-<input id="foodName" placeholder="Food or Drink Name">
-<input id="foodPrice" type="number" placeholder="Price (ETB)">
-<input id="foodPhoto" placeholder="Food photo URL (optional)">
-<select id="foodCategory">
-<option>Food</option>
-<option>Breakfast</option>
-<option>Lunch</option>
-<option>Dinner</option>
-<option>Coffee</option>
-<option>Drinks</option>
-<option>Dessert</option>
-</select>
-<button onclick="addFood()">Add to Menu</button>
+  <h2>📋 የተመዘገቡ ካፌዎች</h2>
+  <div id="cafeList"></div>
 </div>
 
+<!-- Menu Form -->
 <div class="card">
-<input id="search" placeholder="🔍 Search menu..." oninput="showMenu()">
-<h3>Our Menu</h3>
-<div id="menu"></div>
+  <h2>🍔 ምግብ ወይም መጠጥ ጨምር</h2>
+
+  <select id="category">
+    <option value="ምግብ">ምግብ</option>
+    <option value="ቡና">ቡና</option>
+    <option value="መጠጥ">መጠጥ</option>
+    <option value="ጣፋጭ">ጣፋጭ</option>
+  </select>
+
+  <input id="foodName" placeholder="የምግብ ስም">
+
+  <input id="foodPrice"
+         type="number"
+         placeholder="ዋጋ በብር">
+
+  <input id="foodPhoto"
+         type="file"
+         accept="image/*">
+
+  <button onclick="addFood()">ምግብ ጨምር</button>
 </div>
 
-<div class="card" id="qr">
-<h3>📱 QR Menu</h3>
-<p>Scan to open this menu</p>
-<button onclick="makeQR()">Generate QR Code</button>
-<div id="qrImage"></div>
+<!-- Cafe Menu -->
+<div class="card">
+  <h2>📖 የካፌ ሜኑ</h2>
+
+  <input id="search"
+         placeholder="ምግብ ፈልግ..."
+         oninput="showMenu()">
+
+  <div id="menu"></div>
+</div>
+
+<!-- QR -->
+<div class="card">
+  <h2>📱 የካፌ QR Code</h2>
+  <button onclick="makeQR()">QR Code ፍጠር</button>
+  <div id="qr"></div>
 </div>
 
 </div>
 
-<footer>Developed by Minilik Solomon<br>MenuLink Addis © 2026</footer>
+<footer>
+  MenuLink Addis V4<br>
+  Developed by Minilik Solomon
+</footer>
 
 <script>
-let foods=JSON.parse(localStorage.getItem("foods")||"[]");
-let cafe=localStorage.getItem("cafeName")||"My Cafe";
+let cafes = JSON.parse(localStorage.getItem("ml_cafes") || "[]");
+let foods = JSON.parse(localStorage.getItem("ml_foods") || "[]");
+let activeCafe = localStorage.getItem("ml_active") || "";
 
-document.getElementById("cafeTitle").innerText=cafe;
-document.getElementById("cafeName").value=cafe;
-
-function saveCafe(){
- cafe=document.getElementById("cafeName").value||"My Cafe";
- localStorage.setItem("cafeName",cafe);
- document.getElementById("cafeTitle").innerText=cafe;
+function saveData() {
+  localStorage.setItem("ml_cafes", JSON.stringify(cafes));
+  localStorage.setItem("ml_foods", JSON.stringify(foods));
+  localStorage.setItem("ml_active", activeCafe);
 }
 
-function addFood(){
- let name=document.getElementById("foodName").value;
- let price=document.getElementById("foodPrice").value;
- let photo=document.getElementById("foodPhoto").value;
- let category=document.getElementById("foodCategory").value;
+function addCafe() {
+  const name = document.getElementById("cafeName").value.trim();
+  const phone = document.getElementById("cafePhone").value.trim();
+  const address = document.getElementById("cafeAddress").value.trim();
 
- if(!name||!price){
-  alert("Enter food name and price");
-  return;
- }
-
- foods.push({name,price,photo,category});
- localStorage.setItem("foods",JSON.stringify(foods));
-
- document.getElementById("foodName").value="";
- document.getElementById("foodPrice").value="";
- document.getElementById("foodPhoto").value="";
- showMenu();
-}
-
-function deleteFood(i){
- foods.splice(i,1);
- localStorage.setItem("foods",JSON.stringify(foods));
- showMenu();
-}
-
-function showMenu(){
- let q=document.getElementById("search").value.toLowerCase();
- let menu=document.getElementById("menu");
- menu.innerHTML="";
-
- foods.forEach((f,i)=>{
-  if((f.name+" "+f.category).toLowerCase().includes(q)){
-   menu.innerHTML+=`
-   <div class="food">
-   ${f.photo?`<img src="${f.photo}" alt="${f.name}">`:""}
-   <h4>${f.name}</h4>
-   <p>${f.category}</p>
-   <div class="price">${f.price} ETB</div>
-   <button onclick="deleteFood(${i})">Delete</button>
-   </div>`;
+  if (!name) {
+    alert("የካፌ ስም አስገባ!");
+    return;
   }
- });
+
+  const id = "cafe" + Date.now();
+
+  cafes.push({
+    id,
+    name,
+    phone,
+    address
+  });
+
+  activeCafe = id;
+
+  saveData();
+  showCafes();
+
+  document.getElementById("cafeName").value = "";
+  document.getElementById("cafePhone").value = "";
+  document.getElementById("cafeAddress").value = "";
+
+  alert("ካፌው ተመዝግቧል!");
 }
 
-function makeQR(){
- if(!location.href.startsWith("http")){
-  alert("Publish your website first to create a working public QR!");
-  return;
- }
- let link=encodeURIComponent(location.href);
- document.getElementById("qrImage").innerHTML=
- `<img alt="Menu QR Code" src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${link}">
- <p>Scan with your phone 📱</p>`;
+function selectCafe(id) {
+  activeCafe = id;
+  saveData();
+  showCafes();
+  showMenu();
+  document.getElementById("qr").innerHTML = "";
 }
 
+function deleteCafe(id) {
+  if (!confirm("ይህን ካፌ ማጥፋት ትፈልጋለህ?")) return;
+
+  cafes = cafes.filter(c => c.id !== id);
+  foods = foods.filter(f => f.cafeId !== id);
+
+  if (activeCafe === id) {
+    activeCafe = cafes.length ? cafes[0].id : "";
+  }
+
+  saveData();
+  showCafes();
+  showMenu();
+}
+
+function showCafes() {
+  const box = document.getElementById("cafeList");
+  box.innerHTML = "";
+
+  cafes.forEach(c => {
+    const div = document.createElement("div");
+    div.className = "menu-item";
+
+    const btn = document.createElement("button");
+    btn.className = "cafe-button";
+    btn.textContent = c.name + (activeCafe === c.id ? " ✓" : "");
+    btn.onclick = () => selectCafe(c.id);
+
+    const info = document.createElement("p");
+    info.textContent = c.address + " | " + c.phone;
+
+    const del = document.createElement("button");
+    del.className = "delete";
+    del.textContent = "ካፌውን አጥፋ";
+    del.onclick = () => deleteCafe(c.id);
+
+    div.append(btn, info, del);
+    box.appendChild(div);
+  });
+}
+
+function addFood() {
+  if (!activeCafe) {
+    alert("መጀመሪያ ካፌ መዝግብ!");
+    return;
+  }
+
+  const name = document.getElementById("foodName").value.trim();
+  const price = document.getElementById("foodPrice").value;
+  const category = document.getElementById("category").value;
+  const file = document.getElementById("foodPhoto").files[0];
+
+  if (!name || price === "" || Number(price) < 0) {
+    alert("የምግብ ስምና ትክክለኛ ዋጋ አስገባ!");
+    return;
+  }
+
+  function saveFood(photo) {
+    foods.push({
+      id: Date.now(),
+      cafeId: activeCafe,
+      name,
+      price: Number(price),
+      category,
+      photo
+    });
+
+    saveData();
+    showMenu();
+
+    document.getElementById("foodName").value = "";
+    document.getElementById("foodPrice").value = "";
+    document.getElementById("foodPhoto").value = "";
+
+    alert("ምግቡ ተጨምሯል!");
+  }
+
+  if (file) {
+    const reader = new FileReader();
+
+    reader.onload = function() {
+      saveFood(reader.result);
+    };
+
+    reader.readAsDataURL(file);
+  } else {
+    saveFood("");
+  }
+}
+
+function deleteFood(id) {
+  foods = foods.filter(f => f.id !== id);
+  saveData();
+  showMenu();
+}
+
+function showMenu() {
+  const box = document.getElementById("menu");
+  const search = document.getElementById("search").value.toLowerCase();
+
+  box.innerHTML = "";
+
+  const cafe = cafes.find(c => c.id === activeCafe);
+
+  if (!cafe) {
+    box.textContent = "ካፌ ምረጥ እና ሜኑ ጨምር።";
+    return;
+  }
+
+  const title = document.createElement("h3");
+  title.textContent = "🏪 " + cafe.name;
+  box.appendChild(title);
+
+  foods
+    .filter(f => f.cafeId === activeCafe)
+    .filter(f =>
+      f.name.toLowerCase().includes(search) ||
+      f.category.toLowerCase().includes(search)
+    )
+    .forEach(f => {
+      const div = document.createElement("div");
+      div.className = "menu-item";
+
+      if (f.photo) {
+        const img = document.createElement("img");
+        img.src = f.photo;
+        img.alt = f.name;
+        div.appendChild(img);
+      }
+
+      const name = document.createElement("h3");
+      name.textContent = f.name;
+
+      const cat = document.createElement("p");
+      cat.textContent = "ምድብ፦ " + f.category;
+
+      const price = document.createElement("strong");
+      price.textContent = f.price.toLocaleString() + " ብር";
+
+      const del = document.createElement("button");
+      del.className = "delete";
+      del.textContent = "ምግቡን አጥፋ";
+      del.onclick = () => deleteFood(f.id);
+
+      div.append(name, cat, price, del);
+      box.appendChild(div);
+    });
+}
+
+function makeQR() {
+  const cafe = cafes.find(c => c.id === activeCafe);
+
+  if (!cafe) {
+    alert("መጀመሪያ ካፌ ምረጥ!");
+    return;
+  }
+
+  const link = location.href.split("?")[0] + "?cafe=" + encodeURIComponent(cafe.id);
+
+  const box = document.getElementById("qr");
+  box.innerHTML = "";
+
+  const img = document.createElement("img");
+  img.alt = "Cafe QR Code";
+  img.src = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" + encodeURIComponent(link);
+
+  const p = document.createElement("p");
+  p.textContent = cafe.name + " QR Code";
+
+  const a = document.createElement("a");
+  a.href = img.src;
+  a.target = "_blank";
+  a.textContent = "QR ኮዱን ክፈት እና አውርድ";
+
+  box.append(p, img, a);
+}
+
+function loadCafeFromURL() {
+  const id = new URLSearchParams(location.search).get("cafe");
+
+  if (id && cafes.some(c => c.id === id)) {
+    activeCafe = id;
+    saveData();
+  }
+}
+
+loadCafeFromURL();
+showCafes();
 showMenu();
 </script>
+
 </body>
 </html>
