@@ -1,17 +1,18 @@
+
 <!DOCTYPE html>
 <html lang="am">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MenuLink Addis V5</title>
+<title>MenuLink Addis</title>
 
 <style>
 *{box-sizing:border-box}
 body{
  margin:0;
  font-family:Arial,sans-serif;
- background:#f2f8f4;
- color:#183b2b
+ background:#f0f7f2;
+ color:#20392c
 }
 header{
  background:#168348;
@@ -19,17 +20,17 @@ header{
  text-align:center;
  padding:22px 14px
 }
-header h1{margin:0;font-size:28px}
-header p{margin:8px 0 0}
-.wrap{max-width:850px;margin:auto;padding:14px}
+header h1{margin:0}
+header p{margin:8px 0}
+.container{max-width:850px;margin:auto;padding:14px}
 .card{
  background:white;
- border-radius:18px;
  padding:18px;
- margin:0 0 16px;
- box-shadow:0 3px 14px #0000000a
+ margin-bottom:16px;
+ border-radius:16px;
+ box-shadow:0 3px 12px #0000000b
 }
-.card h2{color:#168348;margin:0 0 15px;font-size:22px}
+h2{color:#168348;font-size:21px}
 input,select,button{
  width:100%;
  padding:13px;
@@ -41,33 +42,29 @@ input,select,button{
 button{
  background:#168348;
  color:white;
- border:0;
- font-weight:bold;
- cursor:pointer
+ border:none;
+ font-weight:bold
 }
-button.secondary{background:#e7f4ec;color:#176a3d}
-button.danger{background:#d84444}
-.lang{max-width:140px;margin:10px auto}
+.secondary{background:#e7f4ec;color:#168348}
+.danger{background:#d94343}
 .food{
  display:flex;
- gap:12px;
  align-items:center;
+ gap:12px;
  border-bottom:1px solid #eee;
  padding:12px 0
 }
 .food img{
- width:86px;
- height:86px;
- object-fit:cover;
- border-radius:10px
+ width:90px;height:90px;
+ object-fit:cover;border-radius:10px
 }
-.food .details{flex:1}
-.price{color:#168348;font-weight:bold}
-.small{font-size:13px;color:#6b7b72}
-.qrbox{text-align:center}
-.qrbox img{width:min(260px,100%);height:auto}
+.details{flex:1}
+.price{color:#168348;font-weight:bold;margin-top:5px}
+.small{color:#777;font-size:13px}
 .hidden{display:none!important}
-.foot{text-align:center;color:#718078;padding:20px}
+footer{text-align:center;padding:20px;color:#777}
+.lang{max-width:150px}
+#customerMenu .food{align-items:center}
 </style>
 </head>
 
@@ -75,384 +72,367 @@ button.danger{background:#d84444}
 
 <header>
 <h1>🍽️ MenuLink Addis</h1>
-<p id="tagline">የካፌዎች ዲጂታል ሜኑ</p>
-
-<select class="lang" id="language">
-<option value="am">አማርኛ</option>
-<option value="en">English</option>
+<p id="subtitle">የካፌዎች ዲጂታል ሜኑ</p>
+<select id="language" class="lang">
+<option value="am">🇪🇹 አማርኛ</option>
+<option value="en">🇬🇧 English</option>
 </select>
 </header>
 
-<div class="wrap" id="ownerView">
+<div class="container" id="ownerView">
 
-<section class="card">
-<h2 id="regTitle">🏪 የካፌ ምዝገባ</h2>
+<div class="card">
+<h2 id="registrationTitle">🏪 የካፌ ምዝገባ</h2>
 <input id="cafeName" placeholder="የካፌ ስም">
-<input id="cafePhone" placeholder="የስልክ ቁጥር">
+<input id="cafePhone" placeholder="ስልክ ቁጥር">
 <input id="cafeAddress" placeholder="የካፌ አድራሻ">
-<button id="saveCafe">ካፌ መመዝገብ / ማስቀመጥ</button>
-</section>
+<button id="saveCafe">ካፌ መረጃ አስቀምጥ</button>
+</div>
 
-<section class="card">
-<h2 id="addTitle">🍔 ምግብ ወደ ሜኑ መጨመር</h2>
+<div class="card">
+<h2 id="addTitle">🍔 ምግብ ጨምር</h2>
 
 <select id="category">
-<option value="Food">ምግብ</option>
-<option value="Breakfast">ቁርስ</option>
-<option value="Lunch">ምሳ</option>
-<option value="Dinner">እራት</option>
-<option value="Coffee">ቡና</option>
-<option value="Drinks">መጠጥ</option>
-<option value="Dessert">ዴሰርት</option>
+<option value="Food">Food / ምግብ</option>
+<option value="Breakfast">Breakfast / ቁርስ</option>
+<option value="Lunch">Lunch / ምሳ</option>
+<option value="Dinner">Dinner / እራት</option>
+<option value="Coffee">Coffee / ቡና</option>
+<option value="Drinks">Drinks / መጠጥ</option>
+<option value="Dessert">Dessert / ዴሰርት</option>
 </select>
 
 <input id="foodName" placeholder="የምግብ ስም">
-<input id="foodPrice" type="number" min="0" placeholder="ዋጋ (ብር)">
+<input id="foodPrice" type="number" placeholder="ዋጋ (ETB)">
 <input id="foodPhoto" type="file" accept="image/*">
 
-<button id="addFood">ምግብ ጨምር</button>
-</section>
-
-<section class="card">
-<h2 id="menuTitle">📖 የእኔ ሜኑ</h2>
-<input id="search" placeholder="ምግብ ፈልግ...">
-<div id="ownerMenu"></div>
-</section>
-
-<section class="card qrbox">
-<h2 id="qrTitle">📱 የካፌ QR Code</h2>
-
-<button id="makeQr">QR Code ፍጠር</button>
-
-<p id="qrInfo" class="small"></p>
-<div id="qrResult"></div>
-
-<button id="copyLink" class="secondary hidden">Link ኮፒ</button>
-<button id="downloadQr" class="secondary hidden">QR አውርድ</button>
-
-<p class="small" id="qrNote">
-QR ውስጥ የካፌ እና የምግብ መረጃ ይካተታል።
-ፎቶዎች በQR ሊንክ ውስጥ አይካተቱም።
-</p>
-</section>
+<button id="addButton">ምግብ ጨምር</button>
+<button id="cancelEdit" class="secondary hidden">Cancel Edit</button>
 </div>
 
-<div class="wrap hidden" id="customerView">
-<section class="card">
+<div class="card">
+<h2 id="menuTitle">📖 የእኔ ሜኑ</h2>
+<input id="search" placeholder="ምግብ ፈልግ">
+<div id="ownerMenu"></div>
+</div>
+
+<div class="card">
+<h2 id="qrTitle">📱 QR Menu</h2>
+<button id="qrButton">QR Code ፍጠር</button>
+<div id="qrResult"></div>
+<button id="copyButton" class="secondary hidden">Copy Menu Link</button>
+<button id="downloadButton" class="secondary hidden">Download QR</button>
+<p class="small" id="qrNote">
+QR ኮዱ የሜኑ መረጃን ይይዛል።
+</p>
+</div>
+
+<button class="secondary" id="previewButton">👁️ Customer Menu Preview</button>
+</div>
+
+<div class="container hidden" id="customerView">
+<div class="card">
+<button class="secondary" id="backButton">← Back</button>
 <h2 id="customerCafe"></h2>
 <p id="customerInfo"></p>
 <input id="customerSearch" placeholder="Search menu">
 <div id="customerMenu"></div>
-</section>
+</div>
 </div>
 
-<footer class="foot">
-MenuLink Addis V5 · Developed by Minilik Solomon
-</footer>
+<footer>MenuLink Addis · Developed by Minilik Solomon</footer>
 
 <script>
-const translations={
-am:{
-tag:'የካፌዎች ዲጂታል ሜኑ',
-reg:'🏪 የካፌ ምዝገባ',
-name:'የካፌ ስም',
-phone:'የስልክ ቁጥር',
-address:'የካፌ አድራሻ',
-save:'ካፌ መመዝገብ / ማስቀመጥ',
-add:'🍔 ምግብ ወደ ሜኑ መጨመር',
-food:'የምግብ ስም',
-price:'ዋጋ (ብር)',
-addFood:'ምግብ ጨምር',
-menu:'📖 የእኔ ሜኑ',
-search:'ምግብ ፈልግ...',
-qr:'📱 የካፌ QR Code',
-make:'QR Code ፍጠር',
-note:'QR ውስጥ የካፌ እና የምግብ መረጃ ይካተታል። ፎቶዎች በQR ሊንክ ውስጥ አይካተቱም።',
-remove:'አጥፋ',
-empty:'ምግብ አልተጨመረም።',
-customerSearch:'ሜኑ ፈልግ...',
-saved:'የካፌ መረጃ ተቀምጧል።',
-added:'ምግቡ ተጨምሯል።',
-need:'የካፌ ስም፣ ምግብ ስም እና ዋጋ አስገባ።'
-},
+const $=id=>document.getElementById(id);
 
+let language="am";
+let cafe={name:"",phone:"",address:""};
+let foods=[];
+let editing=-1;
+let qrLink="";
+
+const text={
+am:{
+subtitle:"የካፌዎች ዲጂታል ሜኑ",
+registration:"🏪 የካፌ ምዝገባ",
+add:"🍔 ምግብ ጨምር",
+menu:"📖 የእኔ ሜኑ",
+qr:"📱 QR Menu",
+cafeName:"የካፌ ስም",
+phone:"ስልክ ቁጥር",
+address:"የካፌ አድራሻ",
+foodName:"የምግብ ስም",
+price:"ዋጋ (ETB)",
+search:"ምግብ ፈልግ",
+save:"ካፌ መረጃ አስቀምጥ",
+addButton:"ምግብ ጨምር",
+update:"ምግብ አስተካክል",
+makeQR:"QR Code ፍጠር",
+empty:"ምግብ አልተጨመረም።",
+saved:"መረጃ ተቀምጧል።",
+added:"ምግብ ተጨምሯል።",
+remove:"አጥፋ",
+edit:"አስተካክል",
+preview:"👁️ የደንበኛ ሜኑ ተመልከት",
+back:"← ተመለስ",
+note:"QR ኮዱ የካፌ እና የምግብ መረጃን ይይዛል።"
+},
 en:{
-tag:'Digital menus for cafes',
-reg:'🏪 Cafe Registration',
-name:'Cafe name',
-phone:'Phone number',
-address:'Cafe address',
-save:'Save Cafe Details',
-add:'🍔 Add Menu Item',
-food:'Food name',
-price:'Price (ETB)',
-addFood:'Add Menu Item',
-menu:'📖 My Menu',
-search:'Search menu...',
-qr:'📱 Cafe QR Code',
-make:'Generate QR Code',
-note:'The QR contains cafe and menu details. Uploaded photos are not included in the QR link.',
-remove:'Delete',
-empty:'No menu items added yet.',
-customerSearch:'Search menu...',
-saved:'Cafe details saved.',
-added:'Menu item added.',
-need:'Enter cafe name, item name, and price.'
+subtitle:"Digital Menus for Cafes",
+registration:"🏪 Cafe Registration",
+add:"🍔 Add Menu Item",
+menu:"📖 My Menu",
+qr:"📱 QR Menu",
+cafeName:"Cafe Name",
+phone:"Phone Number",
+address:"Cafe Address",
+foodName:"Food Name",
+price:"Price (ETB)",
+search:"Search menu",
+save:"Save Cafe Details",
+addButton:"Add Menu Item",
+update:"Update Menu Item",
+makeQR:"Generate QR Code",
+empty:"No menu items yet.",
+saved:"Information saved.",
+added:"Menu item added.",
+remove:"Delete",
+edit:"Edit",
+preview:"👁️ Customer Menu Preview",
+back:"← Back",
+note:"QR contains cafe and menu information."
 }
 };
 
-const $=id=>document.getElementById(id);
-
-let lang='am';
-let foods=[];
-let cafe={name:'',phone:'',address:''};
-let qrUrl='';
-
-function read(){
- try{
-  cafe=JSON.parse(localStorage.getItem('ml5cafe'))||cafe;
-  foods=JSON.parse(localStorage.getItem('ml5foods'))||[];
- }catch(e){}
-}
-
 function save(){
- localStorage.setItem('ml5cafe',JSON.stringify(cafe));
- localStorage.setItem('ml5foods',JSON.stringify(foods));
+ try{
+  localStorage.setItem("menulink_cafe",JSON.stringify(cafe));
+  localStorage.setItem("menulink_foods",JSON.stringify(foods));
+ }catch(e){
+  alert("Storage full. Try a smaller food photo.");
+ }
 }
 
-function t(k){
- return translations[lang][k]||k;
+function load(){
+ try{
+ cafe=JSON.parse(localStorage.getItem("menulink_cafe"))||cafe;
+ foods=JSON.parse(localStorage.getItem("menulink_foods"))||[];
+ }catch(e){}
+ $("cafeName").value=cafe.name||"";
+ $("cafePhone").value=cafe.phone||"";
+ $("cafeAddress").value=cafe.address||"";
+ render();
 }
 
-function setLang(l){
- lang=l;
- document.documentElement.lang=l;
-
- const map={
-  regTitle:'reg',
-  addTitle:'add',
-  menuTitle:'menu',
-  qrTitle:'qr'
- };
-
- Object.keys(map).forEach(id=>{
-  $(id).textContent=t(map[id]);
- });
-
- $('tagline').textContent=t('tag');
- $('cafeName').placeholder=t('name');
- $('cafePhone').placeholder=t('phone');
- $('cafeAddress').placeholder=t('address');
- $('foodName').placeholder=t('food');
- $('foodPrice').placeholder=t('price');
- $('search').placeholder=t('search');
- $('customerSearch').placeholder=t('customerSearch');
- $('saveCafe').textContent=t('save');
- $('addFood').textContent=t('addFood');
- $('makeQr').textContent=t('make');
- $('qrNote').textContent=t('note');
-
- renderOwner();
- renderCustomer();
+function setLanguage(l){
+ language=l;
+ const t=text[l];
+ document.documentElement.lang=l==="am"?"am":"en";
+ $("subtitle").textContent=t.subtitle;
+ $("registrationTitle").textContent=t.registration;
+ $("addTitle").textContent=t.add;
+ $("menuTitle").textContent=t.menu;
+ $("qrTitle").textContent=t.qr;
+ $("cafeName").placeholder=t.cafeName;
+ $("cafePhone").placeholder=t.phone;
+ $("cafeAddress").placeholder=t.address;
+ $("foodName").placeholder=t.foodName;
+ $("foodPrice").placeholder=t.price;
+ $("search").placeholder=t.search;
+ $("saveCafe").textContent=t.save;
+ $("addButton").textContent=editing<0?t.addButton:t.update;
+ $("qrButton").textContent=t.makeQR;
+ $("qrNote").textContent=t.note;
+ $("previewButton").textContent=t.preview;
+ $("backButton").textContent=t.back;
+ render();
 }
 
 function saveCafe(){
  cafe={
-  name:$('cafeName').value.trim(),
-  phone:$('cafePhone').value.trim(),
-  address:$('cafeAddress').value.trim()
+ name:$("cafeName").value.trim(),
+ phone:$("cafePhone").value.trim(),
+ address:$("cafeAddress").value.trim()
  };
  save();
- alert(t('saved'));
+ alert(text[language].saved);
 }
 
 function addFood(){
- let name=$('foodName').value.trim();
- let price=$('foodPrice').value;
- let category=$('category').value;
- let file=$('foodPhoto').files[0];
+ const name=$("foodName").value.trim();
+ const price=$("foodPrice").value;
+ const category=$("category").value;
+ const file=$("foodPhoto").files[0];
 
- if(!cafe.name)cafe.name=$('cafeName').value.trim();
-
- if(!name||price===''||!cafe.name){
-  alert(t('need'));
+ if(!cafe.name)cafe.name=$("cafeName").value.trim();
+ if(!cafe.name||!name||price===""){
+  alert("Cafe name, food name and price required.");
   return;
  }
 
- const item={name,price,category,image:''};
+ function finish(image){
+  const item={name,price,category,image:image||""};
+  if(editing>=0){
+   foods[editing]=item;
+   editing=-1;
+  }else foods.push(item);
+  save();
+  render();
+  clearForm();
+  alert(text[language].added);
+ }
 
  if(file){
   const reader=new FileReader();
-
-  reader.onload=()=>{
-   item.image=reader.result;
-   foods.push(item);
-   save();
-   renderOwner();
-   $('foodName').value='';
-   $('foodPrice').value='';
-   $('foodPhoto').value='';
-   alert(t('added'));
-  };
-
+  reader.onload=()=>finish(reader.result);
   reader.readAsDataURL(file);
-
  }else{
-  foods.push(item);
-  save();
-  renderOwner();
-  $('foodName').value='';
-  $('foodPrice').value='';
-  alert(t('added'));
+  const old=editing>=0?foods[editing].image:"";
+  finish(old);
  }
 }
 
-function renderOwner(){
- const q=$('search').value.toLowerCase();
-
- $('ownerMenu').innerHTML=foods
- .filter(f=>(f.name+' '+f.category).toLowerCase().includes(q))
- .map((f,i)=>`
- <div class="food">
- ${f.image?`<img src="${f.image}" alt="${esc(f.name)}">`:''}
- <div class="details">
- <b>${esc(f.name)}</b>
- <div class="small">${esc(f.category)}</div>
- <div class="price">${esc(f.price)} ETB</div>
- </div>
- <button class="danger" style="width:auto" onclick="removeFood(${i})">
- ${t('remove')}
- </button>
- </div>
- `).join('')||`<p class="small">${t('empty')}</p>`;
+function clearForm(){
+ $("foodName").value="";
+ $("foodPrice").value="";
+ $("foodPhoto").value="";
+ $("addButton").textContent=text[language].addButton;
+ $("cancelEdit").classList.add("hidden");
 }
 
-function removeFood(i){
+function editFood(i){
+ editing=i;
+ const f=foods[i];
+ $("foodName").value=f.name;
+ $("foodPrice").value=f.price;
+ $("category").value=f.category;
+ $("addButton").textContent=text[language].update;
+ $("cancelEdit").classList.remove("hidden");
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function deleteFood(i){
+ if(confirm("Delete this menu item?")){
  foods.splice(i,1);
  save();
- renderOwner();
+ render();
+ }
 }
 
 function esc(s){
  return String(s).replace(/[&<>"']/g,c=>({
- '&':'&amp;',
- '<':'&lt;',
- '>':'&gt;',
- '"':'&quot;',
- "'":'&#39;'
+ "&":"&amp;","<":"&lt;",">":"&gt;",
+ '"':"&quot;","'":"&#39;"
  }[c]));
 }
 
-function renderCustomer(){
- const q=$('customerSearch').value.toLowerCase();
-
- $('customerCafe').textContent=cafe.name||'Cafe Menu';
-
- $('customerInfo').textContent=
- [cafe.phone,cafe.address].filter(Boolean).join(' · ');
-
- $('customerMenu').innerHTML=foods
- .filter(f=>(f.name+' '+f.category).toLowerCase().includes(q))
- .map(f=>`
- <div class="food">
- ${f.image?`<img src="${f.image}" alt="${esc(f.name)}">`:''}
+function foodHTML(f,i,customer=false){
+ return `<div class="food">
+ ${f.image?`<img src="${f.image}" alt="">`:""}
  <div class="details">
  <b>${esc(f.name)}</b>
  <div class="small">${esc(f.category)}</div>
  <div class="price">${esc(f.price)} ETB</div>
  </div>
- </div>
- `).join('')||`<p>${t('empty')}</p>`;
+ ${customer?"":`
+ <div>
+ <button class="secondary" onclick="editFood(${i})">${text[language].edit}</button>
+ <button class="danger" onclick="deleteFood(${i})">${text[language].remove}</button>
+ </div>`}
+ </div>`;
 }
 
-function openCustomerFromData(data){
- cafe=data.cafe||{};
- foods=data.foods||[];
-
- $('ownerView').classList.add('hidden');
- $('customerView').classList.remove('hidden');
-
+function render(){
+ const q=$("search").value.toLowerCase();
+ $("ownerMenu").innerHTML=foods
+ .map((f,i)=>({f,i}))
+ .filter(x=>(x.f.name+" "+x.f.category).toLowerCase().includes(q))
+ .map(x=>foodHTML(x.f,x.i)).join("")
+ ||`<p class="small">${text[language].empty}</p>`;
  renderCustomer();
 }
 
-function makeQr(){
- if(!cafe.name){
-  alert(t('need'));
-  return;
- }
-
- const payload={
-  cafe:{
-   name:cafe.name,
-   phone:cafe.phone,
-   address:cafe.address
-  },
-  foods:foods.map(f=>({
-   name:f.name,
-   price:f.price,
-   category:f.category,
-   image:f.image&&f.image.startsWith('http')?f.image:''
-  }))
- };
-
- const encoded=btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
-
- qrUrl=location.origin+location.pathname+'?menu='+encoded;
-
- $('qrInfo').textContent=cafe.name+' QR Code';
-
- $('qrResult').innerHTML=`
- <img id="qrImage" class="qr" alt="QR code"
- src="https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=${encodeURIComponent(qrUrl)}">
- <p><a href="${qrUrl}" target="_blank">Open customer menu</a></p>
- `;
-
- $('copyLink').classList.remove('hidden');
- $('downloadQr').classList.remove('hidden');
+function renderCustomer(){
+ const q=$("customerSearch").value.toLowerCase();
+ $("customerCafe").textContent=cafe.name||"Cafe Menu";
+ $("customerInfo").textContent=[cafe.phone,cafe.address].filter(Boolean).join(" · ");
+ $("customerMenu").innerHTML=foods
+ .filter(f=>(f.name+" "+f.category).toLowerCase().includes(q))
+ .map(f=>foodHTML(f,-1,true)).join("")
+ ||`<p>${text[language].empty}</p>`;
 }
 
-$('saveCafe').onclick=saveCafe;
-$('addFood').onclick=addFood;
-$('search').oninput=renderOwner;
-$('customerSearch').oninput=renderCustomer;
-$('makeQr').onclick=makeQr;
+function showCustomer(){
+ $("ownerView").classList.add("hidden");
+ $("customerView").classList.remove("hidden");
+ renderCustomer();
+ window.scrollTo(0,0);
+}
+function showOwner(){
+ $("customerView").classList.add("hidden");
+ $("ownerView").classList.remove("hidden");
+ window.scrollTo(0,0);
+}
 
-$('copyLink').onclick=async()=>{
+function makeQR(){
+ if(!cafe.name){
+ alert("Please enter cafe name first.");
+ return;
+ }
+ const payload={cafe,foods:foods.map(f=>({
+ name:f.name,price:f.price,category:f.category
+ }))};
+ const encoded=btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
+ qrLink=location.origin+location.pathname+"?menu="+encoded;
+ const imgURL="https://api.qrserver.com/v1/create-qr-code/?size=280x280&data="+encodeURIComponent(qrLink);
+ $("qrResult").innerHTML=`<div style="text-align:center;padding:12px">
+ <img id="qrImage" src="${imgURL}" alt="QR code" style="max-width:280px;width:100%">
+ <p><a href="${qrLink}" target="_blank">Open customer menu</a></p></div>`;
+ $("copyButton").classList.remove("hidden");
+ $("downloadButton").classList.remove("hidden");
+}
+
+$("saveCafe").onclick=saveCafe;
+$("addButton").onclick=addFood;
+$("cancelEdit").onclick=()=>{editing=-1;clearForm()};
+$("search").oninput=render;
+$("language").onchange=e=>setLanguage(e.target.value);
+$("qrButton").onclick=makeQR;
+$("previewButton").onclick=showCustomer;
+$("backButton").onclick=showOwner;
+$("customerSearch").oninput=renderCustomer;
+
+$("copyButton").onclick=async()=>{
  try{
-  await navigator.clipboard.writeText(qrUrl);
-  alert('Link copied');
+ await navigator.clipboard.writeText(qrLink);
+ alert("Link copied!");
  }catch(e){
-  prompt('Copy this menu link',qrUrl);
+ prompt("Copy this link:",qrLink);
  }
 };
-
-$('downloadQr').onclick=()=>{
- const a=document.createElement('a');
- a.href=$('qrImage').src;
- a.download='MenuLink-QR.png';
+$("downloadButton").onclick=()=>{
+ const a=document.createElement("a");
+ a.href=$("qrImage").src;
+ a.download="MenuLink-QR.png";
  a.click();
 };
 
-$('language').onchange=e=>setLang(e.target.value);
-
-read();
-
-$('cafeName').value=cafe.name||'';
-$('cafePhone').value=cafe.phone||'';
-$('cafeAddress').value=cafe.address||'';
-
 const params=new URLSearchParams(location.search);
-
-if(params.has('menu')){
+if(params.has("menu")){
  try{
-  const decoded=decodeURIComponent(escape(atob(params.get('menu'))));
-  openCustomerFromData(JSON.parse(decoded));
+ const data=JSON.parse(decodeURIComponent(escape(atob(params.get("menu")))));
+ cafe=data.cafe||{};
+ foods=data.foods||[];
+ $("ownerView").classList.add("hidden");
+ $("customerView").classList.remove("hidden");
+ renderCustomer();
  }catch(e){
-  alert('Menu link invalid');
+ alert("Invalid menu link");
  }
 }
 
-setLang('am');
+load();
+setLanguage("am");
 </script>
 
 </body>
